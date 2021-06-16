@@ -6,4 +6,7 @@ exports.routesConfig = (app) => {
         AuthenticationController.validateUserAndPassword,
         AuthenticationController.login
     ]);
+    app.post('/logout', [
+        AuthenticationController.logout
+    ]);
 };

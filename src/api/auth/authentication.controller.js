@@ -57,6 +57,17 @@ exports.login = async (req, res, next) => {
     }
 };
 
+exports.logout = async (req, res, next) => {
+    try {
+        res.clearCookie('name');
+        res.clearCookie('jwt');
+        res.status(200).send({ message: 'Successfully logged out' });
+    } catch (err) {
+        console.log(err.message);
+        next(err);
+    }
+};
+
 exports.checkEmailDuplicate = async (req, res, next) => {
     let user;
     try {
