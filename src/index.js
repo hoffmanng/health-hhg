@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const config = require('./common/env.config.js');
 const AuthRouter = require('./api/auth/auth.routes');
 const UsersRouter = require('./api/users/users.routes');
@@ -17,6 +18,7 @@ if (!config.jwt_secret) {
 }
 
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Credentials', 'true');
