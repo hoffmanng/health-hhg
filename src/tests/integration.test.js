@@ -69,7 +69,7 @@ test('When I create user1, then I should get back the userId', async () => {
 test('When I authenticate with user1, then I should get the JWT token', async () => {
     expect.assertions(2);
     const method = 'POST';
-    const path = '/auth';
+    const path = '/login';
     const data = {
         email: test1Username,
         password: test1Password
@@ -420,7 +420,7 @@ test('When I create user2, then I should get back the userId', async () => {
 test('When I authenticate with user2, then I should get the JWT token', async () => {
     expect.assertions(2);
     const method = 'POST';
-    const path = '/auth';
+    const path = '/login';
     const data = {
         email: test2Username,
         password: test2Password
