@@ -4,7 +4,7 @@ exports.defaultErrorHandler = (err, req, res, next) => {
     const type = err.type || 'UnknownError';
     const message = err.message || 'Something went wrong.';
 
-    console.log(`Fired errorHandler: code=${statusCode} type=${type}, message=${message}`);
+    console.log(`Fired errorHandler: code=${statusCode}, type=${type}, message=${message}`);
     res.status(statusCode).send({ message });
 };
 

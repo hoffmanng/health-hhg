@@ -1,4 +1,5 @@
 const DatapointModel = require('./datapoints.model');
+const { ResponseError } = require('../../common/responseErrors');
 
 exports.add = async (data) => {
     const transformedData = { ...data };
@@ -8,7 +9,7 @@ exports.add = async (data) => {
 
 exports.list = async ({ limit, page, filter }) => {
     if (!filter.userId) {
-        throw new Error('UserId filter is missing');
+        throw new ResponseError(400, 'UserId filter is missing');
     }
     return DatapointModel.list({ limit, page, filter });
 };

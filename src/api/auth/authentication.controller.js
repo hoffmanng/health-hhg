@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const UsersService = require('../users/users.service');
 const AuthHelper = require('../../common/auth.helper');
+const { ResponseError, UnauthorizedError } = require('../../common/responseErrors');
 
 exports.checkAuthFields = (req, res, next) => {
     const errors = [];
@@ -12,8 +13,7 @@ exports.checkAuthFields = (req, res, next) => {
         errors.push('Missing password field');
     }
     if (errors.length) {
-        // 400
-        const err = new Error(errors.join(', '));
+        const err = new ResponseError(400, errors.join(', '));
         console.log(err.message);
         next(err);
     }
@@ -25,15 +25,13 @@ exports.validateUserAndPassword = async (req, res, next) => {
     try {
         user = await UsersService.findByEmail({ email: req.body.email, sendHash: true });
         if (!user.email) {
-            // 400
-            throw new Error('Invalid e-mail or password');
+            throw new ResponseError(400, 'Invalid e-mail or password');
         }
         const dbHash = user.hash;
         const dbSalt = user.salt;
         const localHash = AuthHelper.getHash(dbSalt, req.body.password);
         if (localHash !== dbHash) {
-            // 400
-            throw new Error('Invalid e-mail or password');
+            throw new ResponseError(400, 'Invalid e-mail or password');
         }
         next();
     } catch (err) {
@@ -77,8 +75,7 @@ exports.checkEmailDuplicate = async (req, res, next) => {
     try {
         user = await UsersService.findByEmail({ email: req.body.email });
         if (!!user.email) {
-            // 400
-            throw new Error('Email address already exists');
+            throw new ResponseError(400, 'Email address already exists');
         }
     } catch (err) {
         console.log(err.message);
@@ -92,16 +89,14 @@ exports.validJWTNeeded = (req, res, next) => {
         const authorizationHeader = req.headers.authorization;
         const jwtCookie = req.cookies.jwt;
         if (!authorizationHeader && !jwtCookie) {
-            // 401
-            throw new Error('Unauthorized');
+            throw new UnauthorizedError('Missing basic authorization header or cookie');
         }
         const jwtToken = jwtCookie || req.headers.authorization.split(' ')[1];
         // 403
         req.jwt = jwt.verify(jwtToken, process.env.JWT_SECRET);
 
         if (req.jwt.expireAt && req.jwt.expireAt < Date.now() / 1000) {
-            // 401
-            throw new Error('Unauthorized');
+            throw new UnauthorizedError('JWT token expired');
         }
     } catch (err) {
         console.log(err.message);

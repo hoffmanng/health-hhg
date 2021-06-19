@@ -1,5 +1,6 @@
 const UserModel = require('./users.model');
 const AuthHelper = require('../../common/auth.helper');
+const { ResponseError } = require('../../common/responseErrors');
 
 exports.findByEmail = async ({ email, sendHash }) => {
     const result = await UserModel.findByEmail(email);
@@ -23,7 +24,7 @@ exports.findByEmail = async ({ email, sendHash }) => {
 exports.add = async (userData) => {
     const { email, password } = userData;
     if (!email || !password) {
-        throw new Error('Email or Password is missing');
+        throw new ResponseError(400, 'Email or Password is missing');
     }
     const salt = AuthHelper.generateSalt();
     const hash = AuthHelper.getHash(salt, password);
