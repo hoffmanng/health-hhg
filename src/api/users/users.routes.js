@@ -19,4 +19,8 @@ exports.routesConfig = (app) => {
         AuthenticationController.validJWTNeeded,
         UsersController.delete
     ]);
+    app.get('/user', [
+        AuthenticationController.validJWTNeeded,
+        UsersController.getUser
+    ]);
 };

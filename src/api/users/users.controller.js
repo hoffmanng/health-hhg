@@ -41,3 +41,13 @@ exports.delete = async (req, res, next) => {
         next(err);
     }
 };
+
+exports.getUser = async (req, res, next) => {
+    try {
+        const result = req.jwt;
+        res.status(200).send(result);
+    } catch (err) {
+        console.log(err.message);
+        next(err);
+    }
+};
