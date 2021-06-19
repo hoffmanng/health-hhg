@@ -2,7 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const config = require('./common/env.config.js');
+require('dotenv').config();
 const AuthRouter = require('./api/auth/auth.routes');
 const UsersRouter = require('./api/users/users.routes');
 const DatapointsRouter = require('./api/datapoints/datapoints.routes');
@@ -12,7 +12,7 @@ const DiagnosticsService = require('./api/diagnostics/diagnostics.service');
 
 const app = express();
 
-if (!config.jwt_secret) {
+if (!process.env.JWT_SECRET) {
     console.log('JWT secret is not set up!');
     process.exit(1);
 }
@@ -39,7 +39,7 @@ DiagnosticsRouter.routesConfig(app);
 app.use(ErrorHandlerMiddleware.notFoundHandler);
 app.use(ErrorHandlerMiddleware.defaultErrorHandler);
 
-app.listen(config.port, async () => {
+app.listen(process.env.PORT, async () => {
     try {
         const result = await DiagnosticsService.logStartupTime();
         console.log({
@@ -49,5 +49,5 @@ app.listen(config.port, async () => {
     } catch (err) {
         console.log(err.message);
     }
-    console.log(`Listening on port ${config.port}`);
+    console.log(`Listening on port ${process.env.PORT}`);
 });

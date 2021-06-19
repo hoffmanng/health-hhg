@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const config = require('./env.config.js');
 
 const options = {
     autoIndex: false,
@@ -11,10 +10,10 @@ const options = {
 
 const connect = async () => {
     try {
-        await mongoose.connect(config.mongodb_uri, options);
+        await mongoose.connect(process.env.MONGODB_URI, options);
         console.log('Connected to MongoDB');
     } catch (err) {
-        console.log(`Could not connect to MongoDB at ${config.mongodb_uri}`);
+        console.log(`Could not connect to MongoDB at ${process.env.MONGODB_URI}`);
     }
 };
 

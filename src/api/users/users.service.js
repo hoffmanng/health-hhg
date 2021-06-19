@@ -1,5 +1,4 @@
 const UserModel = require('./users.model');
-const validityTime = require('../../common/env.config.js').jwt_expiration_in_seconds;
 const AuthHelper = require('../../common/auth.helper');
 
 exports.findByEmail = async ({ email, sendHash }) => {
@@ -11,7 +10,7 @@ exports.findByEmail = async ({ email, sendHash }) => {
     data = {
         userId: result[0]._id,
         email: result[0].email,
-        expireAt: Date.now() / 1000 + validityTime,
+        expireAt: Math.floor(Date.now() / 1000 + Number(process.env.JWT_EXPIRATION_IN_SEC)),
         permissionLevel: result[0].permissionLevel
     };
     if (sendHash === true) {
