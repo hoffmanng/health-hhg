@@ -89,7 +89,7 @@ exports.validJWTNeeded = (req, res, next) => {
         const authorizationHeader = req.headers.authorization;
         const jwtCookie = req.cookies.jwt;
         if (!authorizationHeader && !jwtCookie) {
-            throw new UnauthorizedError('Missing basic authorization header or cookie');
+            throw new UnauthorizedError();
         }
         const jwtToken = jwtCookie || req.headers.authorization.split(' ')[1];
         // 403
