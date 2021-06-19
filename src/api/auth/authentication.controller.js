@@ -47,6 +47,14 @@ exports.login = async (req, res, next) => {
         const user = await UsersService.findByEmail({ email: req.body.email });
         const accessToken = jwt.sign(user, process.env.JWT_SECRET);
         const cookieExpirationTime = new Date(Date.now() + Number(process.env.JWT_EXPIRATION_IN_SEC) * 1000);
+
+        res.cookie('jwt', accessToken, {
+            expires: cookieExpirationTime,
+            httpOnly: true,
+            path: '/',
+            secure: process.env.NODE_ENV.toLowerCase() === 'production',
+            sameSite: 'Strict'
+        });
         res.status(200).send({ accessToken });
     } catch (err) {
         console.log(err.message);
@@ -56,7 +64,6 @@ exports.login = async (req, res, next) => {
 
 exports.logout = async (req, res, next) => {
     try {
-        res.clearCookie('name');
         res.clearCookie('jwt');
         res.status(200).send({ message: 'Successfully logged out' });
     } catch (err) {

@@ -20,7 +20,11 @@ if (!process.env.JWT_SECRET) {
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
+    if (process.env.NODE_ENV.toLowerCase() === 'production') {
+        res.header('Access-Control-Allow-Origin', '*');
+    } else {
+        res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    }
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
     res.header('Access-Control-Expose-Headers', 'Content-Length');
