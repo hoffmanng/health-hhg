@@ -1,7 +1,7 @@
 /* eslint-disable no-prototype-builtins */
 const axios = require('axios');
 // eslint-disable-next-line prefer-destructuring
-const port = require('../common/env.config').port;
+const port = process.env.PORT;
 const DiagnosticsHelper = require('../common/diagnostics.helper');
 const UsersService = require('../api/users/users.service');
 const DatapointsService = require('../api/datapoints/datapoints.service');
