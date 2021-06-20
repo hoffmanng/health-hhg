@@ -1,11 +1,12 @@
 /* eslint-disable no-prototype-builtins */
+require('dotenv').config();
 const axios = require('axios');
-// eslint-disable-next-line prefer-destructuring
-const port = process.env.PORT;
+
 const DiagnosticsHelper = require('../common/diagnostics.helper');
 const UsersService = require('../api/users/users.service');
 const DatapointsService = require('../api/datapoints/datapoints.service');
 
+const port = process.env.PORT;
 const host = `http://localhost:${port}`;
 const test1Username = 'test1';
 const test1Password = 'test1password';
